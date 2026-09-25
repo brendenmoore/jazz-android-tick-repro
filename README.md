@@ -1,19 +1,19 @@
 # Jazz Android foreground tick reproduction
 
-Small Expo app with Better Auth email/password login, editable to-dos, and editable subtasks. It reproduces `Jazz native foreground runtime failed during tick` on Android. There is no app-level disconnect/reconnect logic, network listener, household provisioning, navigation library, or UI framework.
+Small Expo app with Better Auth email/password login, editable to-dos, and editable subtasks. It reproduces `Jazz native foreground runtime failed during tick` on Android. The app uses basic React Native controls and the Jazz session API, with no custom connection management.
 
 ## Confirmed cause
 
 On `jazz-tools` / `jazz-rn` **2.0.0-alpha.56**, the native transport classifier treats these connection failures as terminal:
 
 - Android DNS failure in airplane mode: `IO error: failed to lookup address information: No address associated with hostname`. The diagnostic build reports `ErrorKind::Uncategorized`.
-- A TLS socket closed without `close_notify` while the original application was idle and online: `IO error: peer closed connection without sending TLS close_notify`.
+- A TLS socket closed without `close_notify` during an idle, online diagnostic capture: `IO error: peer closed connection without sending TLS close_notify`.
 
 The relay worker stores the terminal error. A later foreground tick checks that error and returns `LifecycleFailure` (native status 5), which the React Native bridge exposes as the generic tick error. Ticks are also scheduled by background runtime work; a user edit is not required. `Reconnecting` does not clear the saved terminal error; `Connected` does.
 
-The DNS case was reproduced in **this minimal app**, with a local-first account, one to-do and one subtask. Better Auth and recipe/household logic are not required for that case. Better Auth signup and the same to-do/subtask writes were separately verified against the included local server. The idle TLS failure was captured in the original app with the diagnostic library; the minimal app's idle variant is provided but has not yet been observed failing. The reason the remote peer closed TLS is unknown; the erroneous promotion of connection loss into a local runtime failure is directly observed.
+The DNS case was reproduced in **this minimal app**, with a local-first account, one to-do and one subtask. Better Auth is not required for that case. Better Auth signup and the same to-do/subtask writes were separately verified against the included local server. Additional native diagnostic evidence captures the idle TLS failure; this repository's idle variant is provided but has not yet been observed failing. The reason the remote peer closed TLS is unknown; the erroneous promotion of connection loss into a local runtime failure is directly observed.
 
-See [native logs](evidence/original-app-native-errors.log), [minimal app logs](evidence/minimal-offline-native-errors.log), and [minimal app screenshot](evidence/minimal-offline-tick.png). The diagnostic patch only adds logging; it does not alter classification, retries, or tick behavior.
+See [native logs](evidence/native-transport-errors.log), [minimal app logs](evidence/minimal-offline-native-errors.log), and [minimal app screenshot](evidence/minimal-offline-tick.png). The diagnostic patch only adds logging; it does not alter classification, retries, or tick behavior.
 
 Tagged upstream code:
 
@@ -25,7 +25,7 @@ The upstream fix needs to classify ordinary DNS/connection loss as retryable wit
 
 ## Versions
 
-The critical dependencies match the meal planner: Jazz tools, React Native wrapper and native payload **2.0.0-alpha.56**; Better Auth and its Expo plugin **1.7.1**; Expo **57.0.24**; React Native **0.86.3**; React **19.2.3**. All direct app dependencies are pinned and `pnpm-lock.yaml` is included. The only default Jazz patch is the original app's Android 16 KB linker-alignment patch. Native diagnostic logging is opt-in.
+Pinned dependency versions: Jazz tools, React Native wrapper and native payload **2.0.0-alpha.56**; Better Auth and its Expo plugin **1.7.1**; Expo **57.0.24**; React Native **0.86.3**; React **19.2.3**. All direct app dependencies are pinned and `pnpm-lock.yaml` is included. The only default Jazz patch enables Android 16 KB linker alignment. Native diagnostic logging is opt-in.
 
 Requires Node 22.12+, pnpm 11.19.0, Android SDK/JDK and an ARM64 Android emulator. Tested with Android API 36.1. Use a development build, not Expo Go.
 
@@ -37,7 +37,7 @@ corepack pnpm exec expo prebuild --platform android --no-install
 corepack pnpm android
 ```
 
-The Android package is `dev.bmoore.jazztickrepro`; it does not replace the meal planner. The regular Metro port is 8095.
+The Android package is `dev.bmoore.jazztickrepro`. The regular Metro port is 8095.
 
 ## Better Auth + local Jazz server
 
@@ -63,7 +63,7 @@ adb -s emulator-5554 shell am start -n dev.bmoore.jazztickrepro/.MainActivity \
 
 Create a Better Auth account or sign in, add a to-do and subtask, then edit their titles. Local server credentials in `package.json` and `server.ts` are deliberately fixed test values, not deployment credentials. Bindings and secrets are for local development only. `.data/` contains local test data and is ignored by Git.
 
-**Airplane mode does not sever ADB reverse tunnels.** Use the hosted variant below for the real Android DNS failure. The local backend verifies the Better Auth integration without borrowing any existing application data or credentials.
+**Airplane mode does not sever ADB reverse tunnels.** Use the hosted variant below for the real Android DNS failure. The local backend provides an isolated Better Auth test environment.
 
 ## Minimal hosted/offline reproduction
 
@@ -121,6 +121,6 @@ Review logs before sharing. The included evidence contains only targeted error m
 - Better Auth signup, to-do creation, and subtask creation work against the local server.
 - The hosted local-first control reproduces the exact tick error with both the stock and logging-only native binaries. The stock run also failed before the scripted edit, demonstrating that background ticks can surface the outage. See [stock result](evidence/minimal-stock-result.log).
 - Native diagnostics confirm Android DNS `Uncategorized` → terminal event → tick terminal-error guard → generic JS exception.
-- Original app diagnostics additionally confirm idle TLS EOF → terminal event → tick terminal-error guard → generic JS exception.
+- Additional native diagnostics confirm idle TLS EOF → terminal event → tick terminal-error guard → generic JS exception.
 
 This repository contains a reproduction and diagnostic evidence, not an application workaround or an upstream fix.
