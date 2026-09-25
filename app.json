@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "Jazz Tick Repro",
+    "slug": "jazz-android-tick-repro",
+    "scheme": "jazztickrepro",
+    "version": "1.0.0",
+    "plugins": [
+      "jazz-rn"
+    ],
+    "android": {
+      "package": "dev.bmoore.jazztickrepro"
+    },
+    "ios": {
+      "bundleIdentifier": "dev.bmoore.jazztickrepro"
+    }
+  }
+}

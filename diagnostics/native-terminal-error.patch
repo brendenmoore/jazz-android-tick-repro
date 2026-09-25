@@ -1,0 +1,61 @@
+diff --git a/crates/jazz-native-relay/src/lib.rs b/crates/jazz-native-relay/src/lib.rs
+index 81cf061..9e26330 100644
+--- a/crates/jazz-native-relay/src/lib.rs
++++ b/crates/jazz-native-relay/src/lib.rs
+@@ -1038,6 +1038,7 @@ impl NativeRelayHost {
+                             .unwrap_or_else(|poisoned| poisoned.into_inner()) = None;
+                     }
+                     NativeRelaySocketEvent::TerminalError(error) => {
++                        tick_diagnostic(&format!("socket terminal event: {error}"));
+                         connected_for_event.store(false, Ordering::Release);
+                         *terminal_for_event
+                             .lock()
+@@ -1431,7 +1432,8 @@ impl NativeRelayHost {
+             .get(&foreground)
+             .ok_or(JazzNativeRelayStatus::InvalidHandle)?;
+         let (relay, scope) = (opened.relay, opened.scope.clone());
+-        if self.private_scope_terminal_error(&scope).is_some() {
++        if let Some(error) = self.private_scope_terminal_error(&scope) {
++            tick_diagnostic(&format!("tick terminal-error guard: {error}"));
+             return Err(JazzNativeRelayStatus::LifecycleFailure);
+         }
+         self.relays
+@@ -15590,3 +15592,17 @@ mod tests {
+         drop(admitted);
+     }
+ }
++
++// Diagnostic-only: no behavior changes.
++fn tick_diagnostic(message: &str) {
++    #[cfg(target_os = "android")]
++    {
++        #[link(name = "log")]
++        unsafe extern "C" { fn __android_log_write(priority: i32, tag: *const std::ffi::c_char, text: *const std::ffi::c_char) -> i32; }
++        if let Ok(message) = std::ffi::CString::new(message) {
++            unsafe { __android_log_write(6, c"JazzTickProbe".as_ptr(), message.as_ptr()); }
++        }
++    }
++    #[cfg(not(target_os = "android"))]
++    eprintln!("[JazzTickProbe] {message}");
++}
+diff --git a/crates/jazz-native-transport/src/lib.rs b/crates/jazz-native-transport/src/lib.rs
+index 8830fef..9b4e16e 100644
+--- a/crates/jazz-native-transport/src/lib.rs
++++ b/crates/jazz-native-transport/src/lib.rs
+@@ -88,6 +88,16 @@ impl std::error::Error for WebSocketClientError {}
+ /// Match typed transport/wire causes, never diagnostic strings. Only the same
+ /// NotReady/Later admission response accepted by the browser is retryable.
+ fn native_transport_error(error: WebSocketClientError) -> NativeTransportError {
++    #[cfg(target_os = "android")]
++    if let WebSocketClientError::Connect(tokio_tungstenite::tungstenite::Error::Io(ref io))
++        | WebSocketClientError::Send(tokio_tungstenite::tungstenite::Error::Io(ref io))
++        | WebSocketClientError::Receive(tokio_tungstenite::tungstenite::Error::Io(ref io)) = error {
++        #[link(name = "log")]
++        unsafe extern "C" { fn __android_log_write(priority: i32, tag: *const std::ffi::c_char, text: *const std::ffi::c_char) -> i32; }
++        let message = std::ffi::CString::new(format!("transport IO kind={:?}: {}", io.kind(), io)).unwrap();
++        unsafe { __android_log_write(6, c"JazzTickProbe".as_ptr(), message.as_ptr()); }
++    }
++
+     let retryable = match &error {
+         // A proxy may accept TCP while its upstream is restarting and close
+         // before HTTP upgrade completes. No rejected response was received.

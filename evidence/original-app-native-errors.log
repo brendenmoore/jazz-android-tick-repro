@@ -1,0 +1,6 @@
+09-24 22:55:28.053 E/JazzTickProbe(15193): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-24 22:56:09.208 E/JazzTickProbe(15193): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-24 22:56:09.655 E/JazzTickProbe(15193): tick terminal-error guard: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-24 23:13:42.645 E/JazzTickProbe(16363): socket terminal event: native relay socket terminated: failed to receive websocket frame: IO error: peer closed connection without sending TLS close_notify: https://docs.rs/rustls/latest/rustls/manual/_03_howto/index.html#unexpected-eof
+09-24 23:30:10.835 E/JazzTickProbe(16363): tick terminal-error guard: native relay socket terminated: failed to receive websocket frame: IO error: peer closed connection without sending TLS close_notify: https://docs.rs/rustls/latest/rustls/manual/_03_howto/index.html#unexpected-eof
+09-24 23:30:12.745 E/ReactNativeJS(16363): [Error: Jazz native foreground runtime failed during tick]

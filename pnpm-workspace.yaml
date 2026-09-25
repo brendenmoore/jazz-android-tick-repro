@@ -1,0 +1,6 @@
+allowBuilds:
+  esbuild: true
+  protobufjs: true
+
+patchedDependencies:
+  jazz-rn@2.0.0-alpha.56: patches/jazz-rn@2.0.0-alpha.56.patch

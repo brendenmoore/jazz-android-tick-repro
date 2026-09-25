@@ -1,0 +1,14 @@
+diff --git a/android/CMakeLists.txt b/android/CMakeLists.txt
+index 0bb163f827e064a5f0dd0c72408c947c98a23676..c9abfea51628b96f79a9a511833c38f9addd9ac1 100644
+--- a/android/CMakeLists.txt
++++ b/android/CMakeLists.txt
+@@ -5,6 +5,9 @@ find_package(ReactAndroid REQUIRED CONFIG)
+ find_package(fbjni REQUIRED CONFIG)
+ 
+ add_library(jazzrelay SHARED cpp-relay.cpp ../native/foreground-runtime.cpp)
++# Expo SDK 57 builds with NDK r27, whose linker defaults to 4 KB ELF segments.
++# Android devices with 16 KB pages require the shared relay to use 16 KB segments.
++target_link_options(jazzrelay PRIVATE "-Wl,-z,max-page-size=16384")
+ # React Native 0.81's public headers use C++20 concepts. Keep the requirement
+ # target-scoped so this library cannot depend on an app's incidental global
+ # CMake standard or silently compile in an older language mode.

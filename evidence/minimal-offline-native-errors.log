@@ -1,0 +1,33 @@
+--------- beginning of main
+09-25 07:46:29.255 E/JazzTickProbe(17868): transport IO kind=ConnectionAborted: Software caused connection abort (os error 103)
+09-25 07:46:30.257 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:30.257 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:31.263 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:31.263 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:32.267 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:32.267 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:33.271 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:33.271 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:34.274 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:34.274 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:35.290 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:35.290 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:35.840 E/JazzTickProbe(17868): tick terminal-error guard: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:35.973 E/ReactNativeJS(17868): [Error: Jazz native foreground runtime failed during tick]
+09-25 07:46:36.294 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:36.294 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:37.296 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:37.296 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:40.917 E/JazzTickProbe(17868): transport IO kind=ConnectionAborted: Software caused connection abort (os error 103)
+09-25 07:46:40.921 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:40.921 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:41.925 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:41.926 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:42.932 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:42.932 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:43.934 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:43.934 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:44.937 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:44.937 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname
+09-25 07:46:45.941 E/JazzTickProbe(17868): transport IO kind=Uncategorized: failed to lookup address information: No address associated with hostname
+09-25 07:46:45.941 E/JazzTickProbe(17868): socket terminal event: native relay socket connect failed: failed to connect websocket: IO error: failed to lookup address information: No address associated with hostname

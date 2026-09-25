@@ -1,0 +1,41 @@
+{
+  "name": "jazz-android-tick-repro",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.js",
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "start": "expo start --dev-client --port 8095",
+    "android": "expo run:android --port 8095",
+    "typecheck": "tsc --noEmit",
+    "server": "jazz-tools server 019a0000-0000-7000-8000-000000000056 --port 1625 --data-dir .data --admin-secret local-repro-admin --backend-secret local-repro-backend --jwks-url http://127.0.0.1:3005/api/auth/jwks --allow-local-first-auth --jwt-issuer http://127.0.0.1:3005 --jwt-audience http://127.0.0.1:3005",
+    "auth": "tsx server.ts",
+    "deploy": "jazz-tools deploy 019a0000-0000-7000-8000-000000000056 --server-url http://127.0.0.1:1625 --admin-secret local-repro-admin",
+    "cloud:provision": "node scripts/cloud-provision.mjs",
+    "cloud:start": "node scripts/cloud-start.mjs",
+    "repro:offline": "python3 scripts/android-repro.py",
+    "repro:idle": "python3 scripts/android-repro.py --idle-seconds 1800"
+  },
+  "dependencies": {
+    "@better-auth/expo": "1.7.1",
+    "better-auth": "1.7.1",
+    "expo": "57.0.24",
+    "expo-crypto": "57.0.3",
+    "expo-dev-client": "57.0.19",
+    "expo-linking": "57.0.10",
+    "expo-secure-store": "57.0.4",
+    "jazz-rn": "2.0.0-alpha.56",
+    "jazz-tools": "2.0.0-alpha.56",
+    "jazz-napi": "2.0.0-alpha.56",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "metro-runtime": "0.85.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "19.2.2",
+    "typescript": "6.0.3",
+    "tsx": "4.20.6",
+    "babel-preset-expo": "57.0.8"
+  }
+}
